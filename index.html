@@ -67,7 +67,6 @@
             font-size: 14px;
             font-weight: 400;
             transition: color 0.3s ease;
-            position: relative;
         }
         .nav-links a:hover { color: var(--accent-gold); }
         .nav-cta {
@@ -89,6 +88,42 @@
             background: none;
             border: none;
             font-size: 24px;
+            cursor: pointer;
+            color: var(--text-primary);
+            z-index: 1001;
+        }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+        }
+        .mobile-menu.active {
+            display: flex;
+        }
+        .mobile-menu a {
+            font-family: var(--font-display);
+            font-size: 32px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .mobile-menu a:hover { color: var(--accent-gold); }
+        .mobile-menu-close {
+            position: absolute;
+            top: 24px;
+            right: 64px;
+            background: none;
+            border: none;
+            font-size: 32px;
             cursor: pointer;
             color: var(--text-primary);
         }
@@ -166,7 +201,7 @@
         .hero-visual svg {
             width: 100%;
             max-width: 500px;
-            filter: drop-shadow(0 40px 80px rgba(201, 169, 98, 0.15));
+            filter: drop-shadow(0 40px 80px rgba(201, 169, 98, 0.2));
         }
         
         .stats-bar {
@@ -239,13 +274,10 @@
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             text-decoration: none;
             color: inherit;
-            position: relative;
-            overflow: hidden;
         }
         .service-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
-            border-color: transparent;
         }
         .service-icon {
             width: 64px;
@@ -275,9 +307,6 @@
             font-weight: 500;
             font-size: 14px;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
         }
         
         .kurse {
@@ -546,9 +575,9 @@
             .services-grid, .kurse-grid { grid-template-columns: 1fr; }
             .ebooks-grid { grid-template-columns: 1fr; }
             .footer-content { grid-template-columns: 1fr 1fr; }
-            .stats-bar { gap: 60px; }
+            .stats-bar { gap: 60px; flex-wrap: wrap; }
             .nav { padding: 20px 32px; }
-            .nav-links { display: none; }
+            .nav-links, .nav-cta { display: none; }
             .mobile-menu-btn { display: block; }
         }
         @media (max-width: 768px) {
@@ -562,6 +591,7 @@
             .ebook-btn { margin: 0 auto; }
             .footer-content { grid-template-columns: 1fr; gap: 40px; text-align: center; }
             .footer-bottom { flex-direction: column; gap: 16px; }
+            .mobile-menu-close { right: 32px; }
             .cta h2 { font-size: 36px; }
         }
     </style>
@@ -571,14 +601,25 @@
         <a href="/" class="logo">KI<span>.</span>Expertenraum</a>
         <ul class="nav-links">
             <li><a href="/">Start</a></li>
-            <li><a href="/services/">Services</a></li>
             <li><a href="/kurse/">Kurse</a></li>
-            <li><a href="/artikel/">Insights</a></li>
+            <li><a href="/services/">Services</a></li>
+            <li><a href="/artikel/">Artikel</a></li>
+            <li><a href="/glossar/">Glossar</a></li>
             <li><a href="/kontakt.html">Kontakt</a></li>
         </ul>
         <a href="/kontakt.html" class="nav-cta">Beratung anfragen</a>
-        <button class="mobile-menu-btn">☰</button>
+        <button class="mobile-menu-btn" onclick="document.getElementById('mobileMenu').classList.add('active')">☰</button>
     </nav>
+    
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="document.getElementById('mobileMenu').classList.remove('active')">×</button>
+        <a href="/" onclick="document.getElementById('mobileMenu').classList.remove('active')">Start</a>
+        <a href="/kurse/" onclick="document.getElementById('mobileMenu').classList.remove('active')">Kurse</a>
+        <a href="/services/" onclick="document.getElementById('mobileMenu').classList.remove('active')">Services</a>
+        <a href="/artikel/" onclick="document.getElementById('mobileMenu').classList.remove('active')">Artikel</a>
+        <a href="/glossar/" onclick="document.getElementById('mobileMenu').classList.remove('active')">Glossar</a>
+        <a href="/kontakt.html" onclick="document.getElementById('mobileMenu').classList.remove('active')">Kontakt</a>
+    </div>
 
     <header class="hero">
         <div class="hero-content">
@@ -590,26 +631,38 @@
             </div>
         </div>
         <div class="hero-visual">
-            <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="flowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:#C9A962"/>
-                        <stop offset="100%" style="stop-color:#D4A5A5"/>
+                        <stop offset="50%" style="stop-color:#D4A5A5"/>
+                        <stop offset="100%" style="stop-color:#C9A962"/>
                     </linearGradient>
+                    <filter id="softGlow">
+                        <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
                 </defs>
-                <circle cx="200" cy="200" r="150" stroke="url(#goldGrad)" stroke-width="0.5" opacity="0.3"/>
-                <circle cx="200" cy="200" r="120" stroke="url(#goldGrad)" stroke-width="0.5" opacity="0.4"/>
-                <circle cx="200" cy="200" r="90" stroke="url(#goldGrad)" stroke-width="0.5" opacity="0.5"/>
-                <circle cx="200" cy="200" r="60" fill="url(#goldGrad)" opacity="0.1"/>
-                <circle cx="200" cy="200" r="30" fill="url(#goldGrad)" opacity="0.2"/>
-                <circle cx="200" cy="50" r="4" fill="#C9A962"/>
-                <circle cx="200" cy="350" r="4" fill="#C9A962"/>
-                <circle cx="50" cy="200" r="4" fill="#C9A962"/>
-                <circle cx="350" cy="200" r="4" fill="#C9A962"/>
-                <line x1="200" y1="200" x2="200" y2="50" stroke="#C9A962" stroke-width="0.5" opacity="0.3"/>
-                <line x1="200" y1="200" x2="200" y2="350" stroke="#C9A962" stroke-width="0.5" opacity="0.3"/>
-                <line x1="200" y1="200" x2="50" y2="200" stroke="#C9A962" stroke-width="0.5" opacity="0.3"/>
-                <line x1="200" y1="200" x2="350" y2="200" stroke="#C9A962" stroke-width="0.5" opacity="0.3"/>
+                <!-- Flowing organic shape -->
+                <path d="M250 50 Q350 100 380 200 Q410 300 320 380 Q230 460 150 380 Q70 300 120 200 Q170 100 250 50" 
+                      stroke="url(#flowGrad)" stroke-width="1.5" fill="none" opacity="0.4"/>
+                <path d="M250 80 Q330 120 355 200 Q380 280 310 345 Q240 410 170 345 Q100 280 140 200 Q180 120 250 80" 
+                      stroke="url(#flowGrad)" stroke-width="1.5" fill="none" opacity="0.5"/>
+                <path d="M250 110 Q310 140 330 200 Q350 260 295 310 Q240 360 185 310 Q130 260 155 200 Q180 140 250 110" 
+                      stroke="url(#flowGrad)" stroke-width="2" fill="none" opacity="0.6" filter="url(#softGlow)"/>
+                <!-- Center element -->
+                <circle cx="250" cy="230" r="40" fill="url(#flowGrad)" opacity="0.15"/>
+                <circle cx="250" cy="230" r="25" fill="url(#flowGrad)" opacity="0.25"/>
+                <circle cx="250" cy="230" r="12" fill="url(#flowGrad)" opacity="0.6"/>
+                <!-- Accent dots -->
+                <circle cx="250" cy="50" r="5" fill="#C9A962"/>
+                <circle cx="380" cy="200" r="4" fill="#D4A5A5" opacity="0.8"/>
+                <circle cx="320" cy="380" r="4" fill="#C9A962" opacity="0.8"/>
+                <circle cx="150" cy="380" r="5" fill="#D4A5A5"/>
+                <circle cx="120" cy="200" r="4" fill="#C9A962" opacity="0.8"/>
             </svg>
         </div>
     </header>
@@ -692,8 +745,7 @@
             <a href="https://www.dropbox.com/scl/fi/qee9tm1p7hbo5oe4eyemt/EU-AI-Act-Survival-Guide.pdf?rlkey=chsnn67os8xsei5epy9ft3x9l&st=foqj4wf8&dl=1" class="ebook-card" target="_blank">
                 <div class="ebook-cover"><img src="/public/images/ebook2.png?v=2" alt="eBook 2"></div>
                 <div class="ebook-content">
-                    <span class="ebook-badge">Kostenloser Download</span>
-                    <h3 class="ebook-title">EU AI Act Survival Guide</h3>
+                    <span class="ebook-badge">Kostenloser Download</                    <h3 class="ebook-title">EU AI Act Survival Guide</h3>
                     <p class="ebook-description">Alles über die EU KI-Verordnung – kompakt erklärt.</p>
                     <span class="ebook-btn">Download →</span>
                 </div>
@@ -715,9 +767,9 @@
             </div>
             <div class="footer-col">
                 <h4>Angebot</h4>
-                <a href="/services/">Services</a>
                 <a href="/kurse/">Kurse</a>
-                <a href="/artikel/">Insights</a>
+                <a href="/services/">Services</a>
+                <a href="/artikel/">Artikel</a>
             </div>
             <div class="footer-col">
                 <h4>Rechtliches</h4>
