@@ -211,8 +211,8 @@
         }
         .hero-visual svg {
             width: 100%;
-            max-width: 520px;
-            filter: drop-shadow(0 40px 80px rgba(201, 169, 98, 0.2));
+            max-width: 550px;
+            filter: drop-shadow(0 40px 80px rgba(201, 169, 98, 0.25));
         }
         
         .stats-bar {
@@ -721,49 +721,90 @@
             </div>
         </div>
         <div class="hero-visual">
-            <svg viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:#C9A962"/>
                         <stop offset="100%" style="stop-color:#D4A5A5"/>
                     </linearGradient>
-                    <linearGradient id="barGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style="stop-color:#C9A962;stop-opacity:0.9"/>
-                        <stop offset="100%" style="stop-color:#C9A962;stop-opacity:0.3"/>
+                    <linearGradient id="connectionGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#C9A962;stop-opacity:0" />
+                        <stop offset="50%" style="stop-color:#C9A962;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#C9A962;stop-opacity:0" />
                     </linearGradient>
-                    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#C9A962" flood-opacity="0.2"/>
+                    <filter id="softGlow">
+                        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                    <filter id="strongGlow">
+                        <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
                     </filter>
                 </defs>
                 
-                <!-- Elegant ascending bars - Management style -->
-                <rect x="80" y="280" width="40" height="80" rx="4" fill="url(#barGrad)" opacity="0.3"/>
-                <rect x="140" y="240" width="40" height="120" rx="4" fill="url(#barGrad)" opacity="0.4"/>
-                <rect x="200" y="180" width="40" height="180" rx="4" fill="url(#barGrad)" opacity="0.6"/>
-                <rect x="260" y="140" width="40" height="220" rx="4" fill="url(#barGrad)" opacity="0.8"/>
-                <rect x="320" y="100" width="40" height="260" rx="4" fill="url(#barGrad)" filter="url(#softShadow)"/>
+                <!-- Elegant network structure - representing AI decision making -->
+                <!-- Outer frame -->
+                <rect x="50" y="50" width="400" height="400" rx="30" stroke="url(#goldGrad)" stroke-width="0.5" opacity="0.2"/>
                 
-                <!-- Top highlight bar -->
-                <rect x="320" y="100" width="40" height="60" rx="4" fill="url(#goldGrad)" opacity="0.9"/>
+                <!-- Central hub - AI core -->
+                <circle cx="250" cy="250" r="70" fill="url(#goldGrad)" opacity="0.08" filter="url(#strongGlow)"/>
+                <circle cx="250" cy="250" r="50" fill="url(#goldGrad)" opacity="0.12" filter="url(#softGlow)"/>
+                <circle cx="250" cy="250" r="30" fill="url(#goldGrad)" opacity="0.2" filter="url(#softGlow)"/>
+                <circle cx="250" cy="250" r="12" fill="url(#goldGrad)" filter="url(#strongGlow)"/>
                 
-                <!-- Trend line -->
-                <path d="M100,300 L160,250 L220,200 L280,160 L340,120" 
-                      stroke="url(#goldGrad)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Input nodes - left side -->
+                <circle cx="100" cy="150" r="6" fill="#C9A962" filter="url(#softGlow)"/>
+                <circle cx="80" cy="220" r="5" fill="#C9A962" filter="url(#softGlow)"/>
+                <circle cx="90" cy="290" r="7" fill="#C9A962" filter="url(#softGlow)"/>
+                <circle cx="110" cy="360" r="5" fill="#C9A962" filter="url(#softGlow)"/>
                 
-                <!-- Data points -->
-                <circle cx="100" cy="300" r="6" fill="#C9A962"/>
-                <circle cx="160" cy="250" r="6" fill="#C9A962"/>
-                <circle cx="220" cy="200" r="6" fill="#C9A962"/>
-                <circle cx="280" cy="160" r="6" fill="#C9A962"/>
-                <circle cx="340" cy="120" r="8" fill="#C9A962" stroke="#F5F5F0" stroke-width="3"/>
+                <!-- Output nodes - right side -->
+                <circle cx="400" cy="140" r="5" fill="#D4A5A5" filter="url(#softGlow)"/>
+                <circle cx="420" cy="200" r="7" fill="#D4A5A5" filter="url(#softGlow)"/>
+                <circle cx="410" cy="280" r="6" fill="#D4A5A5" filter="url(#softGlow)"/>
+                <circle cx="390" cy="350" r="5" fill="#D4A5A5" filter="url(#softGlow)"/>
+                <circle cx="430" cy="380" r="6" fill="#D4A5A5" filter="url(#softGlow)"/>
                 
-                <!-- Subtle grid lines -->
-                <line x1="60" y1="350" x2="400" y2="350" stroke="#E5E5E0" stroke-width="1"/>
-                <line x1="60" y1="250" x2="400" y2="250" stroke="#E5E5E0" stroke-width="1" stroke-dasharray="4,4"/>
-                <line x1="60" y1="150" x2="400" y2="150" stroke="#E5E5E0" stroke-width="1" stroke-dasharray="4,4"/>
+                <!-- Connection lines - elegant curves -->
+                <path d="M100,150 Q180,180 220,230" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.4"/>
+                <path d="M80,220 Q150,220 220,240" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.4"/>
+                <path d="M90,290 Q160,280 220,260" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.4"/>
+                <path d="M110,360 Q170,320 220,270" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.4"/>
                 
-                <!-- Elegant frame -->
-                <rect x="40" y="50" width="400" height="320" rx="20" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.2"/>
+                <path d="M280,230 Q350,180 400,140" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.4"/>
+                <path d="M280,240 Q350,220 420,200" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.4"/>
+                <path d="M280,260 Q340,270 410,280" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.4"/>
+                <path d="M280,270 Q330,310 390,350" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.4"/>
+                <path d="M290,280 Q360,330 430,380" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.3"/>
+                
+                <!-- Data flow particles - subtle animation -->
+                <circle cx="150" cy="185" r="2" fill="#C9A962" opacity="0.6">
+                    <animate attributeName="opacity" values="0.2;0.8;0.2" dur="3s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="320" cy="200" r="2" fill="#D4A5A5" opacity="0.6">
+                    <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2.5s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="350" cy="280" r="2" fill="#C9A962" opacity="0.6">
+                    <animate attributeName="opacity" values="0.2;0.8;0.2" dur="3.5s" repeatCount="indefinite"/>
+                </circle>
+                
+                <!-- Processing nodes - middle layer -->
+                <circle cx="180" cy="200" r="4" fill="url(#goldGrad)" opacity="0.5"/>
+                <circle cx="200" cy="280" r="4" fill="url(#goldGrad)" opacity="0.5"/>
+                <circle cx="320" cy="180" r="4" fill="url(#goldGrad)" opacity="0.5"/>
+                <circle cx="340" cy="320" r="4" fill="url(#goldGrad)" opacity="0.5"/>
+                
+                <!-- Accent lines -->
+                <line x1="180" y1="200" x2="220" y2="235" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.3"/>
+                <line x1="200" y1="280" x2="220" y2="255" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.3"/>
+                <line x1="280" y1="235" x2="320" y2="180" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.3"/>
+                <line x1="280" y1="265" x2="340" y2="320" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.3"/>
             </svg>
         </div>
     </header>
